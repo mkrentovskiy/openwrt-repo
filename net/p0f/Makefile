@@ -1,4 +1,4 @@
-opyright (C) 2006 OpenWrt.org
+# Copyright (C) 2006 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -30,25 +30,20 @@ P0f
 endef
 
 CONFIGURE_VARS += \
-CPPFLAGS="$$$$CPPFLAGS -g " \
-LIBS="-nodefaultlibs" \
+	CPPFLAGS="$$$$CPPFLAGS -g " \
+	LIBS="-nodefaultlibs" \
 
 define Build/Configure
-$(call Build/Configure/Default,)
+	$(call Build/Configure/Default,)
 endef
-
-define Build/Compile
-$(MAKE) -C $(PKG_BUILD_DIR) DESTDIR="$(PKG_INSTALL_DIR)"
-endef
-
 
 define Package/p0f/install
-install -d -m0755 $(1)/usr
-install -d -m0755 $(1)/usr/bin
-install -d -m0755 $(1)/etc
-install -d -m0755 $(1)/etc/p0f
-install -m0755 $(PKG_BUILD_DIR)/p0f $(1)/usr/bin
-cp -R $(PKG_BUILD_DIR)/p0f.fp $(1)/etc/p0f
+	install -d -m0755 $(1)/usr
+	install -d -m0755 $(1)/usr/bin
+	install -d -m0755 $(1)/etc
+	install -d -m0755 $(1)/etc/p0f
+	install -m0755 $(PKG_BUILD_DIR)/p0f $(1)/usr/bin
+	cp -R $(PKG_BUILD_DIR)/p0f.fp $(1)/etc/p0f
 endef
 #
 $(eval $(call BuildPackage,p0f))

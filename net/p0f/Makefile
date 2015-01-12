@@ -18,15 +18,15 @@ PKG_MD5SUM:=unknown
 include $(INCLUDE_DIR)/package.mk
 
 define Package/p0f
-SECTION:=net
-CATEGORY:=Network
-DEPENDS:=+libpcap
-TITLE:=P0f
-URL:=http://lcamtuf.coredump.cx/p0f3/
+	SECTION:=net
+	CATEGORY:=Network
+	DEPENDS:=+libpcap
+	TITLE:=P0f
+	URL:=http://lcamtuf.coredump.cx/p0f3/
 endef
 
 define Package/p0f/description
-P0f
+	P0f
 endef
 
 CONFIGURE_VARS += \
@@ -45,6 +45,6 @@ define Package/p0f/install
 	install -m0755 $(PKG_BUILD_DIR)/p0f $(1)/usr/bin
 	cp -R $(PKG_BUILD_DIR)/p0f.fp $(1)/etc/p0f
 endef
-#
+
 $(eval $(call BuildPackage,p0f))
 

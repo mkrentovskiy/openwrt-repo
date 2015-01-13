@@ -5,7 +5,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=libwebsockets
-PKG_VERSION:=master
+PKG_VERSION:=1
 PKG_RELEASE=$(PKG_SOURCE_VERSION)
 
 PKG_SOURCE_PROTO:=git
@@ -21,37 +21,20 @@ include $(INCLUDE_DIR)/cmake.mk
 CMAKE_OPTIONS += -DLWS_OPENSSL_CLIENT_CERTS=/etc/ssl/certs
 CMAKE_OPTIONS += -DLWS_OPENSSL_SUPPORT=ON
 CMAKE_OPTIONS += -DLWS_WITH_SSL=ON
-CMAKE_OPTIONS += -DLWS_WITHOUT_TESTAPPS=$(if $(CONFIG_PACKAGE_libwebsockets-examples),"OFF","ON")
-
-# for cyassl, define these in addition to LWS_OPENSSL_SUPPORT and
-# edit package/libs/cyassl/Makefile to include --enable-opensslextra
-# CMAKE_OPTIONS += -DLWS_USE_CYASSL=ON
-# CMAKE_OPTIONS += -DLWS_CYASSL_LIB=$(STAGING_DIR)/usr/lib/libcyassl.so
-# CMAKE_OPTIONS += -DLWS_CYASSL_INCLUDE_DIRS=$(STAGING_DIR)/usr/include
-
-# other options worth noting
-# CMAKE_OPTIONS += -DLWS_WITHOUT_EXTENSIONS=ON
-# CMAKE_OPTIONS += -DLWS_WITHOUT_DAEMONIZE=ON
-# CMAKE_OPTIONS += -DLWS_WITHOUT_SERVER=ON
-# CMAKE_OPTIONS += -DLWS_WITHOUT_DEBUG=ON
-
-
-define Package/libwebsockets/Default
-	SECTION:=libs
-	CATEGORY:=Libraries
-	TITLE:=libwebsockets
-	DEPENDS:=+zlib +libopenssl
-endef
+CMAKE_OPTIONS += -DLWS_WITHOUT_TESTAPPS=ON
 
 define Package/libwebsockets
-	$(call Package/libwebsockets/Default)
-	TITLE+= (libraries)
+  SECTION:=libs
+  CATEGORY:=Libraries
+  TITLE:=libwebsockets
+  DEPENDS:=+zlib +libopenssl
 endef
 
 define Package/libwebsockets/description
-	libwebsockets
-	This package contains libwebsocket libraries
+  This package contains libwebsocket libraries
 endef
+
+TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include
 
 define Package/libwebsockets/install
 	$(INSTALL_DIR) $(1)/usr/lib

@@ -33,11 +33,11 @@ define Build/Compile
         $(TARGET_CC) $(TARGET_CFLAGS) $(EXTRA_CFLAGS) -Wall -Werror -o $(PKG_BUILD_DIR)/refclk src/refclk.c
 endef
 
-define Package/mtk-linkit/install
+define Package/mtk-linkit-lite/install
 	$(INSTALL_DIR) $(1)/sbin
 	
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/pinmux $(1)/sbin/mt7688_pinmux
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/refclk $(1)/sbin/mt7688_reclk
 endef
 
-$(eval $(call BuildPackage,mtk-linkit))
+$(eval $(call BuildPackage,mtk-linkit-lite))

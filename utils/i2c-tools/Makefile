@@ -12,9 +12,8 @@ PKG_NAME:=i2c-tools
 PKG_VERSION:=3.1.0
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_URL:=http://dl.lm-sensors.org/i2c-tools/releases
-#PKG_MD5SUM:=f15019e559e378c6e9d5d6299a00df21
+PKG_SOURCE:=V3-1-0.tar.gz
+PKG_SOURCE_URL:=https://github.com/groeck/i2c-tools/archive/
 
 include $(INCLUDE_DIR)/package.mk
 

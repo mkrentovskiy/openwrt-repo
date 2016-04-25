@@ -17,7 +17,8 @@ define Package/mtk-linkit-lite
 	+kmod-nls-base +kmod-nls-cp437 +kmod-nls-iso8859-1 \
 	+kmod-nls-utf8 \
 	+kmod-sdhci-mt7620 +kmod-usb-storage \
-	+kmod-sound-core +kmod-sound-mtk +alsa-utils \
+	+kmod-sound-core +kmod-sound-mtk \
+	+spi-tools +uboot-envtools +alsa-utils \
 	+mtk-sdk-wifi
 
   CATEGORY:=Base system

@@ -8,12 +8,11 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=erlang
-PKG_VERSION:=18.3
+PKG_VERSION:=20.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=otp_src_$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:= http://www.erlang.org/download/ \
-	http://erlang.mirror.su.se/
+PKG_SOURCE_URL:= http://www.erlang.org/download/
 PKG_MD5SUM:=7e4ff32f97c36fb3dab736f8d481830b
 
 PKG_LICENSE:=ErlPL-1.1
@@ -45,7 +44,7 @@ endef
 define Package/erlang
 $(call Package/erlang/Default)
   DEPENDS+= +libncurses +librt +zlib
-  PROVIDES:= erlang-erts=7.3 erlang-kernel=4.2 erlang-sasl=2.7 erlang-stdlib=2.8
+  PROVIDES:= erlang-erts erlang-kernel erlang-sasl erlang-stdlib
 endef
 
 define Package/erlang/description
@@ -59,7 +58,6 @@ endef
 define Package/erlang-asn1
 $(call Package/erlang/Default)
   TITLE:=Abstract Syntax Notation One (ASN.1) support
-  VERSION:=4.0.2
   DEPENDS+= +erlang +erlang-syntax-tools
 endef
 
@@ -74,7 +72,6 @@ endef
 define Package/erlang-compiler
 $(call Package/erlang/Default)
   TITLE:=Byte code compiler
-  VERSION:=6.0.3
   DEPENDS+= +erlang +erlang-hipe
 endef
 
@@ -89,7 +86,6 @@ endef
 define Package/erlang-crypto
 $(call Package/erlang/Default)
   TITLE:=Cryptography support
-  VERSION:=3.6.3
   DEPENDS+= +erlang +libopenssl
 endef
 
@@ -104,7 +100,6 @@ endef
 define Package/erlang-hipe
 $(call Package/erlang/Default)
   TITLE:=High Performance Erlang
-  VERSION:=3.15
   DEPENDS+= +erlang
 endef
 
@@ -119,7 +114,6 @@ endef
 define Package/erlang-inets
 $(call Package/erlang/Default)
   TITLE:=Internet clients and servers
-  VERSION:=6.2
   DEPENDS+= +erlang
 endef
 
@@ -135,7 +129,6 @@ endef
 define Package/erlang-mnesia
 $(call Package/erlang/Default)
   TITLE:=Distributed database
-  VERSION:=4.13.3
   DEPENDS+= +erlang
 endef
 
@@ -152,7 +145,6 @@ endef
 define Package/erlang-runtime-tools
 $(call Package/erlang/Default)
   TITLE:=Low-profile debugging/tracing tools
-  VERSION:=1.9.3
   DEPENDS+= +erlang
 endef
 
@@ -167,7 +159,6 @@ endef
 define Package/erlang-snmp
 $(call Package/erlang/Default)
   TITLE:=Simple Network Management Protocol (SNMP) support
-  VERSION:=5.2.2
   DEPENDS+= +erlang +erlang-asn1
 endef
 
@@ -183,7 +174,6 @@ endef
 define Package/erlang-ssh
 $(call Package/erlang/Default)
   TITLE:=Secure Shell (SSH) support
-  VERSION:=4.2.2
   DEPENDS+= +erlang +erlang-crypto
 endef
 
@@ -198,7 +188,6 @@ endef
 define Package/erlang-ssl
 $(call Package/erlang/Default)
   TITLE:=Secure Sockets Layer (SSL) support
-  VERSION:=7.3
   DEPENDS+= +erlang +erlang-crypto
 endef
 
@@ -212,7 +201,6 @@ endef
 define Package/erlang-public_key
 $(call Package/erlang/Default)
   TITLE:=Public Key support
-  VERSION:=1.1.1
   DEPENDS+= +erlang +erlang-crypto +erlang-ssl
 endef
 
@@ -226,7 +214,6 @@ endef
 define Package/erlang-syntax-tools
 $(call Package/erlang/Default)
   TITLE:=Abstract Erlang syntax trees handling support
-  VERSION:=1.6.18
   DEPENDS+= +erlang
 endef
 

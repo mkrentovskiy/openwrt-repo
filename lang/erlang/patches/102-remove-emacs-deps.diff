@@ -1,0 +1,12 @@
+diff -purN otp_src_20.1.a/lib/tools/Makefile otp_src_20.1/lib/tools/Makefile
+--- otp_src_20.1.a/lib/tools/Makefile	2017-09-25 22:10:38.000000000 +0300
++++ otp_src_20.1/lib/tools/Makefile	2017-12-05 17:37:52.229636444 +0300
+@@ -24,7 +24,7 @@ include $(ERL_TOP)/make/$(TARGET)/otp.mk
+ # Macros
+ # ----------------------------------------------------
+ 
+-SUB_DIRECTORIES = c_src src doc/src examples emacs
++SUB_DIRECTORIES = c_src src doc/src examples
+ 
+ include vsn.mk
+ VSN = $(TOOLS_VSN)

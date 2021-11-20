@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=erlang
-PKG_VERSION:=22.2
+PKG_VERSION:=24.1.6
 PKG_RELEASE:=1
 
 PKG_SOURCE:=otp_src_$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:= http://www.erlang.org/download/
-PKG_MD5SUM:=b2b48dad6e69c1e882843edbf2abcfd3
+PKG_MD5SUM:=0c4690dfc56a89fbc2cc3aff618815f1
 
 PKG_LICENSE:=Apache-2.0
 PKG_LICENSE_FILES:=LICENSE.txt

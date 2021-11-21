@@ -1,0 +1,109 @@
+diff -ru a/erts/emulator/Makefile.in b/erts/emulator/Makefile.in
+--- a/erts/emulator/Makefile.in	2021-11-21 19:42:52.051220779 +0000
++++ b/erts/emulator/Makefile.in	2021-11-21 19:40:33.564125440 +0000
+@@ -800,7 +800,7 @@
+ # Usually the same as the default rule, but certain platforms (e.g. win32) mix
+ # different compilers
+ $(OBJDIR)/beam_emu.o: beam/emu/beam_emu.c
+-	$(V_EMU_CC) $(subst -O2, $(GEN_OPT_FLGS), $(CFLAGS)) $(INCLUDES) -c $< -o $@
++	$(V_EMU_CC) $(INCLUDES) $(subst -O2, $(GEN_OPT_FLGS), $(CFLAGS)) -c $< -o $@
+ 
+ $(OBJDIR)/beam_emu.S: beam/emu/beam_emu.c
+ 	$(V_EMU_CC) -S -fverbose-asm $(subst -O2, $(GEN_OPT_FLGS), $(CFLAGS)) $(INCLUDES) -c $< -o $@
+@@ -863,7 +863,7 @@
+ # General targets
+ #
+ $(OBJDIR)/%.o: beam/%.c
+-	$(V_CC) $(subst -O2, $(GEN_OPT_FLGS), $(CFLAGS)) $(INCLUDES) -c $< -o $@
++	$(V_CC) $(INCLUDES) $(subst -O2, $(GEN_OPT_FLGS), $(CFLAGS)) -c $< -o $@
+ 
+ $(OBJDIR)/%.o: beam/emu/%.c
+ 	$(V_CC) $(subst -O2, $(GEN_OPT_FLGS), $(CFLAGS)) $(INCLUDES) -c $< -o $@
+diff -ru a/lib/crypto/c_src/api_ng.c b/lib/crypto/c_src/api_ng.c
+--- a/lib/crypto/c_src/api_ng.c	2021-11-21 19:42:54.855350140 +0000
++++ b/lib/crypto/c_src/api_ng.c	2021-11-21 20:56:05.545464848 +0000
+@@ -39,14 +39,13 @@
+ # define GET_IV_LEN(Ciph) EVP_CIPHER_iv_length((Ciph)->cipher.p)
+ #endif
+ 
+-#if !defined(HAVE_EVP_CIPHER_CTX_COPY)
++#if OPENSSL_VERSION_NUMBER < PACKED_OPENSSL_VERSION_PLAIN(1,1,0)
+ /*
+   The EVP_CIPHER_CTX_copy is not available in older cryptolibs although
+   the function is needed.
+   Instead of implement it in-place, we have a copy here as a compatibility
+   function
+ */
+-
+ int EVP_CIPHER_CTX_copy(EVP_CIPHER_CTX *out, const EVP_CIPHER_CTX *in);
+ 
+ int EVP_CIPHER_CTX_copy(EVP_CIPHER_CTX *out, const EVP_CIPHER_CTX *in)
+@@ -55,6 +54,7 @@
+         {
+             return 0;
+         }
++
+ #ifdef HAS_ENGINE_SUPPORT
+     /* Make sure it's safe to copy a cipher context using an ENGINE */
+     if (in->engine && !ENGINE_init(in->engine))
+diff -ru a/lib/crypto/c_src/engine.c b/lib/crypto/c_src/engine.c
+--- a/lib/crypto/c_src/engine.c	2021-11-21 19:42:54.835349218 +0000
++++ b/lib/crypto/c_src/engine.c	2021-11-21 19:32:20.134923601 +0000
+@@ -239,7 +239,8 @@
+ #ifdef HAS_ENGINE_SUPPORT
+     ASSERT(argc == 0);
+ 
+-    ENGINE_load_dynamic();
++    // ENGINE_load_dynamic();
++    ENGINE_load_builtin_engines();
+     return atom_ok;
+ #else
+     return atom_notsup;
+diff -ru a/lib/crypto/c_src/info.c b/lib/crypto/c_src/info.c
+--- a/lib/crypto/c_src/info.c	2021-11-21 19:42:54.859350324 +0000
++++ b/lib/crypto/c_src/info.c	2021-11-21 19:35:49.203752441 +0000
+@@ -20,6 +20,11 @@
+ 
+ #include "info.h"
+ 
++#if OPENSSL_VERSION_NUMBER < PACKED_OPENSSL_VERSION_PLAIN(1,1,0)
++#define OPENSSL_VERSION	SSLEAY_VERSION
++#define OpenSSL_version	SSLeay_version
++#endif
++
+ #if defined(DEBUG)
+ #  define CB_NAME "crypto_callback.debug"
+ #  define COMPILE_TYPE "debug"
+@@ -132,7 +137,8 @@
+     ASSERT(argc == 0);
+ 
+     name_sz = strlen(libname);
+-    ver = SSLeay_version(SSLEAY_VERSION);
++    // ver = SSLeay_version(SSLEAY_VERSION);
++    ver = OpenSSL_version(OPENSSL_VERSION);
+     ver_sz = strlen(ver);
+     ver_num = OPENSSL_VERSION_NUMBER;
+ 
+diff -ru a/lib/crypto/c_src/otp_test_engine.c b/lib/crypto/c_src/otp_test_engine.c
+--- a/lib/crypto/c_src/otp_test_engine.c	2021-11-21 19:42:54.851349956 +0000
++++ b/lib/crypto/c_src/otp_test_engine.c	2021-11-21 19:36:53.457211265 +0000
+@@ -80,6 +80,7 @@
+ static int test_rsa_free(RSA *rsa);
+ #endif /* if defined(FAKE_RSA_IMPL) */
+ 
++
+ /* The callbacks that does the job of fetching keys on demand by the Engine */
+ EVP_PKEY* test_privkey_load(ENGINE *eng, const char *id, UI_METHOD *ui_method, void *callback_data);
+ EVP_PKEY* test_pubkey_load(ENGINE *eng, const char *id, UI_METHOD *ui_method, void *callback_data);
+@@ -100,9 +101,11 @@
+         goto err;
+ #endif /* if defined(FAKE_RSA_IMPL) */
+ 
++#if OPENSSL_VERSION_NUMBER < PACKED_OPENSSL_VERSION_PLAIN(1,1,0)
+     /* Load all digest and cipher algorithms. Needed for password protected private keys */
+     OpenSSL_add_all_ciphers();
+     OpenSSL_add_all_digests();
++#endif
+ 
+     return 111;
+ 
